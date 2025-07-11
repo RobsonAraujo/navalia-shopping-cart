@@ -11,7 +11,7 @@ import Space from "@/app/components/space/Space";
 export default function Header() {
   return (
     <header
-      className={`flex items-center px-[160px] max-md:px-4 justify-between  border-b border-lightGrey  h-[72px] "
+      className={`flex items-center px-[160px] bg-white max-md:px-4 justify-between  border-b border-lightGrey  h-[72px] "
       }`}
     >
       <div className="flex items-center justify-center">
