@@ -15,7 +15,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { cart, addToCart } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
 
   useEffect(() => {
     async function fetchData() {
@@ -61,7 +61,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <CartSidebar cart={cart} products={products} />
+      <CartSidebar
+        cart={cart}
+        products={products}
+        removeFromCart={removeFromCart}
+      />
       <CartSummary products={products} />
     </div>
   );

@@ -8,9 +8,14 @@ import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
 interface CartSidebarProps {
   cart: CartItem[];
   products: Product[];
+  removeFromCart: (productId: string) => void;
 }
 
-export default function CartSidebar({ cart, products }: CartSidebarProps) {
+export default function CartSidebar({
+  cart,
+  products,
+  removeFromCart,
+}: CartSidebarProps) {
   return (
     <aside className="w-full lg:w-1/4 bg-white p-6 shadow-md">
       <h2 className="text-xl font-bold mb-4">Cart</h2>
@@ -21,13 +26,28 @@ export default function CartSidebar({ cart, products }: CartSidebarProps) {
           {cart.map((item) => {
             const product = products.find((p) => p.id === item.productId);
             return (
-              <li key={item.productId} className="flex justify-between">
+              <li
+                key={item.productId}
+                className="flex justify-between items-center"
+              >
                 <span>
                   {product?.name || "Product"} x {item.quantity}
                 </span>
-                <span className="font-semibold">
-                  {formatCurrency((product?.price || 0) * item.quantity)}
-                </span>
+                <div className="flex items-center gap-4">
+                  <span className="font-semibold">
+                    {formatCurrency((product?.price || 0) * item.quantity)}
+                  </span>
+                  <button
+                    style={{ cursor: "pointer" }}
+                    onClick={() => removeFromCart(item.productId)}
+                    className="text-red-600 hover:text-red-800 text-sm"
+                    aria-label={`Remove ${
+                      product?.name || "product"
+                    } from cart`}
+                  >
+                    Remove
+                  </button>
+                </div>
               </li>
             );
           })}
