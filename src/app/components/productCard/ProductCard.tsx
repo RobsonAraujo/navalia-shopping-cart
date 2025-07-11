@@ -56,6 +56,7 @@ export default function ProductCard({
             <p className="text-lg font-bold text-blue-500">${price}</p>
 
             <button
+              style={{ cursor: "pointer" }}
               onClick={(e) => {
                 e.preventDefault();
                 onAddToCart?.();
