@@ -5,6 +5,8 @@ import theme from "@/theme";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import "./globals.css";
 import { UserTypeProvider } from "./hooks/useUserType";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +26,9 @@ export default function RootLayout({
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
             <AppRouterCacheProvider>
+              <Header />
               <UserTypeProvider>{children}</UserTypeProvider>
+              <Footer />
             </AppRouterCacheProvider>
           </ThemeProvider>
         </StyledEngineProvider>

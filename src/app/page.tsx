@@ -5,7 +5,7 @@ import { UserTypeToggle } from "@/app/components/userTypeToggle/UserTypeToggle";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-white to-blue-50 flex items-center justify-center px-4">
+    <main className="min-h-screen from-white to-blue-50 flex items-center justify-center px-4">
       <div className="text-center max-w-md w-full space-y-6 p-8 bg-white shadow-xl rounded-xl">
         <Typography variant="h4" fontWeight={700}>
           🛒 Super Shop
