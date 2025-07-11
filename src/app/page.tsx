@@ -1,9 +1,21 @@
-import { UserTypeToggle } from "./components/userTypeToggle/UserTypeToggle";
+"use client";
 
-export default function Home() {
+import { Typography } from "@mui/material";
+import { UserTypeToggle } from "@/app/components/userTypeToggle/UserTypeToggle";
+
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <UserTypeToggle />
-    </div>
+    <main className="min-h-screen bg-gradient-to-br from-white to-blue-50 flex items-center justify-center px-4">
+      <div className="text-center max-w-md w-full space-y-6 p-8 bg-white shadow-xl rounded-xl">
+        <Typography variant="h4" fontWeight={700}>
+          🛒 Super Shop
+        </Typography>
+        <Typography variant="subtitle1" className="text-gray-600">
+          Welcome! Choose your user type to begin shopping:
+        </Typography>
+
+        <UserTypeToggle />
+      </div>
+    </main>
   );
 }

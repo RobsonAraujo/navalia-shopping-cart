@@ -1,11 +1,17 @@
 "use client";
 
-import { ButtonGroup, Typography, Box } from "@mui/material";
-import Button from "../Button/Button";
+import { Button, ButtonGroup, Box, Typography } from "@mui/material";
 import { useUserType } from "@/app/hooks/useUserType";
+import { useRouter } from "next/navigation";
 
 export function UserTypeToggle() {
   const { userType, setUserType } = useUserType();
+  const router = useRouter();
+
+  function handleSelect(type: "common" | "vip") {
+    setUserType(type);
+    router.push("/shop");
+  }
 
   return (
     <Box
@@ -17,20 +23,20 @@ export function UserTypeToggle() {
       bgcolor="#f3f4f6"
       borderRadius={2}
     >
-      <Typography fontWeight={500}>Tipo de usuário:</Typography>
+      <Typography fontWeight={500}>User Type:</Typography>
 
       <ButtonGroup variant="outlined">
         <Button
           variant={userType === "common" ? "contained" : "outlined"}
           color="primary"
-          onClick={() => setUserType("common")}
+          onClick={() => handleSelect("common")}
         >
-          Comum
+          Common
         </Button>
         <Button
           variant={userType === "vip" ? "contained" : "outlined"}
           color="primary"
-          onClick={() => setUserType("vip")}
+          onClick={() => handleSelect("vip")}
         >
           VIP
         </Button>
