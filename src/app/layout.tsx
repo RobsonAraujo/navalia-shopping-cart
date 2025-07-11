@@ -28,9 +28,7 @@ export default function RootLayout({
           <ThemeProvider theme={theme}>
             <AppRouterCacheProvider>
               <Header />
-
               <AppProviders> {children}</AppProviders>
-
               <Footer />
             </AppRouterCacheProvider>
           </ThemeProvider>
