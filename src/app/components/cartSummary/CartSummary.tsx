@@ -19,7 +19,6 @@ export default function CartSummary({ products }: { products: Product[] }) {
   const [selectedPromo, setSelectedPromo] = useState<Promotion | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Total quantity of items in the cart
   const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
@@ -61,6 +60,7 @@ export default function CartSummary({ products }: { products: Product[] }) {
     : 0;
 
   if (!promoData) return null;
+  if (cart.length === 0) return null;
 
   return (
     <aside className="w-full lg:w-1/4 bg-white p-6 shadow-xl rounded-xl space-y-5 border border-lightGrey">
