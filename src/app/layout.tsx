@@ -4,6 +4,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import theme from "@/theme";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import "./globals.css";
+import { UserTypeProvider } from "./hooks/useUserType";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+            <AppRouterCacheProvider>
+              <UserTypeProvider>{children}</UserTypeProvider>
+            </AppRouterCacheProvider>
           </ThemeProvider>
         </StyledEngineProvider>
       </body>
