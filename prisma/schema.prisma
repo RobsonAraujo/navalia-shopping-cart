@@ -13,3 +13,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id    String        @id @default(uuid())
+  name  String
+  email String        @unique
+  role  String
+  cart  ShoppingCart?
+}
+
+model Product {
+  id    String             @id @default(uuid())
+  name  String
+  price Decimal            @db.Decimal(10, 2)
+  items ShoppingCartItem[]
+}
+
+model ShoppingCart {
+  id        String             @id @default(uuid())
+  user      User               @relation(fields: [userId], references: [id])
+  userId    String             @unique
+  items     ShoppingCartItem[]
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+model ShoppingCartItem {
+  id        String       @id @default(uuid())
+  cart      ShoppingCart @relation(fields: [cartId], references: [id])
+  cartId    String
+  product   Product      @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+}
