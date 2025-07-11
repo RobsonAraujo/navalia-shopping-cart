@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, ButtonGroup, Box, Typography } from "@mui/material";
-import { useUserType } from "@/app/hooks/useUserType";
+import { useUserType } from "@/app/contexts/useUserType";
 import { useRouter } from "next/navigation";
 
 export function UserTypeToggle() {

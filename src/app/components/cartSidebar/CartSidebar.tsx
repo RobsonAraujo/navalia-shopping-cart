@@ -3,6 +3,7 @@
 import React from "react";
 import { CartItem } from "@/app/types/cart";
 import { Product } from "@/app/types/cart";
+import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
 
 interface CartSidebarProps {
   cart: CartItem[];
@@ -25,7 +26,7 @@ export default function CartSidebar({ cart, products }: CartSidebarProps) {
                   {product?.name || "Product"} x {item.quantity}
                 </span>
                 <span className="font-semibold">
-                  ${((product?.price || 0) * item.quantity).toFixed(2)}
+                  {formatCurrency((product?.price || 0) * item.quantity)}
                 </span>
               </li>
             );

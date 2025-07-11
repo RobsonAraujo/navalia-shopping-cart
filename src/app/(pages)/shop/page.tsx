@@ -6,8 +6,9 @@ import ProductCard, {
   ProductCardProps,
 } from "@/app/components/productCard/ProductCard";
 import { getProducts } from "@/app/lib/api";
-import { useCart } from "@/app/hooks/useCart";
+import { useCart } from "@/app/contexts/useCart";
 import CartSidebar from "@/app/components/cartSidebar/CartSidebar";
+import CartSummary from "@/app/components/cartSummary/CartSummary";
 
 export default function HomePage() {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
@@ -61,6 +62,7 @@ export default function HomePage() {
       </section>
 
       <CartSidebar cart={cart} products={products} />
+      <CartSummary products={products} />
     </div>
   );
 }
