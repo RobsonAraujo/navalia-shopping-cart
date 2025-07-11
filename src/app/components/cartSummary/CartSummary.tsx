@@ -7,6 +7,11 @@ import { useCart } from "@/app/contexts/useCart";
 import { useUserType } from "@/app/contexts/useUserType";
 import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
 
+enum Promotion {
+  vipPercent = "VIP 15% discount",
+  get3For2 = "Get 3 for 2",
+}
+
 export default function CartSummary({ products }: { products: Product[] }) {
   const { cart } = useCart();
   const { userType } = useUserType();
@@ -39,8 +44,10 @@ export default function CartSummary({ products }: { products: Product[] }) {
 
   const getPromoPrice = () => {
     if (!promoData) return 0;
-    if (selectedPromo === "VIP 15% discount") return promoData.details.totalVIP;
-    if (selectedPromo === "Get 3 for 2") return promoData.details.totalPromo;
+    if (selectedPromo === Promotion.vipPercent)
+      return promoData.details.totalVIP;
+    if (selectedPromo === Promotion.get3For2)
+      return promoData.details.totalPromo;
     return promoData.details.totalGross;
   };
 
@@ -73,8 +80,8 @@ export default function CartSummary({ products }: { products: Product[] }) {
             <label className="flex items-center mb-1">
               <input
                 type="radio"
-                checked={selectedPromo === "VIP 15% discount"}
-                onChange={() => handleSelectPromo("VIP 15% discount")}
+                checked={selectedPromo === Promotion.vipPercent}
+                onChange={() => handleSelectPromo(Promotion.vipPercent)}
               />
               <span className="ml-2">
                 VIP 15% discount – {formatCurrency(promoData.details.totalVIP)}
@@ -83,8 +90,8 @@ export default function CartSummary({ products }: { products: Product[] }) {
             <label className="flex items-center mb-1">
               <input
                 type="radio"
-                checked={selectedPromo === "Get 3 for 2"}
-                onChange={() => handleSelectPromo("Get 3 for 2")}
+                checked={selectedPromo === Promotion.get3For2}
+                onChange={() => handleSelectPromo(Promotion.get3For2)}
               />
               <span className="ml-2">
                 Get 3 for 2 – {formatCurrency(promoData.details.totalPromo)}
