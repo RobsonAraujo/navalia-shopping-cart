@@ -5,6 +5,15 @@ import { Product, CartTotalResponse } from "@/app/types/cart";
 import { useCart } from "@/app/contexts/useCart";
 import { useUserType } from "@/app/contexts/useUserType";
 import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
+import Button from "@mui/material/Button";
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  Typography,
+} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
 enum Promotion {
   VIP = "VIP 15% discount",
@@ -64,7 +73,9 @@ export default function CartSummary({ products }: { products: Product[] }) {
 
   return (
     <aside className="w-full lg:w-1/4 bg-white p-6 shadow-xl rounded-xl space-y-5 border border-lightGrey">
-      <h2 className="text-2xl font-bold text-gray-800">🛒 Cart Summary</h2>
+      <Typography variant="h6" className="text-gray-800 font-semibold mb-4">
+        🛒 Cart Summary
+      </Typography>
 
       <ul className="space-y-2 text-sm">
         {cart.map((item) => {
@@ -86,86 +97,96 @@ export default function CartSummary({ products }: { products: Product[] }) {
       </ul>
 
       <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
-        <h3 className="font-semibold text-blue-800 mb-2">
+        <Typography
+          variant="subtitle1"
+          className="font-semibold text-blue-800 mb-2"
+        >
           Choose your promotion:
-        </h3>
+        </Typography>
 
         {userType === "vip" && (
-          <div className="space-y-2">
-            {/* VIP Discount always shown */}
-            <label
-              className={`flex items-center gap-2 p-2 rounded-md border ${
-                selectedPromo === Promotion.VIP
-                  ? "bg-blue-100 border-blue-500"
-                  : "bg-white border-gray-300"
-              } cursor-pointer transition-all`}
+          <FormControl component="fieldset" className="space-y-4">
+            <RadioGroup
+              value={selectedPromo}
+              onChange={(e) => handleSelectPromo(e.target.value as Promotion)}
             >
-              <input
-                type="radio"
-                checked={selectedPromo === Promotion.VIP}
-                onChange={() => handleSelectPromo(Promotion.VIP)}
+              <FormControlLabel
+                value={Promotion.VIP}
+                control={<Radio />}
+                label={
+                  <div className="flex flex-col p-3 border  border-lightGrey  rounded-lg shadow-sm transition-all hover:bg-blue-50">
+                    <Typography
+                      variant="body2"
+                      className="font-medium text-gray-800"
+                    >
+                      {Promotion.VIP}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      className="text-xs text-green-700"
+                    >
+                      You save{" "}
+                      {formatCurrency(
+                        promoData.details.totalGross -
+                          promoData.details.totalVIP
+                      )}
+                    </Typography>
+                  </div>
+                }
+                className="mb-2"
               />
-              <div className="flex flex-col">
-                <span className="font-medium text-gray-800">
-                  {Promotion.VIP}
-                </span>
-                <span className="text-xs text-green-700">
-                  You save{" "}
-                  {formatCurrency(
-                    promoData.details.totalGross - promoData.details.totalVIP
-                  )}
-                </span>
-              </div>
-            </label>
 
-            {/* Get 3 for 2 only if 3 or more items */}
-            {totalItemsInCart >= 3 && (
-              <label
-                className={`flex items-center gap-2 p-2 rounded-md border ${
-                  selectedPromo === Promotion.GET_3_FOR_2
-                    ? "bg-blue-100 border-blue-500"
-                    : "bg-white border-gray-300"
-                } cursor-pointer transition-all`}
-              >
-                <input
-                  type="radio"
-                  checked={selectedPromo === Promotion.GET_3_FOR_2}
-                  onChange={() => handleSelectPromo(Promotion.GET_3_FOR_2)}
+              {totalItemsInCart >= 3 && (
+                <FormControlLabel
+                  value={Promotion.GET_3_FOR_2}
+                  control={<Radio />}
+                  label={
+                    <div className="flex flex-col p-3 border  border-lightGrey rounded-lg shadow-sm transition-all hover:bg-blue-50">
+                      <Typography
+                        variant="body2"
+                        className="font-medium text-gray-800"
+                      >
+                        {Promotion.GET_3_FOR_2}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        className="text-xs text-green-700  "
+                      >
+                        You save{" "}
+                        {formatCurrency(
+                          promoData.details.totalGross -
+                            promoData.details.totalPromo
+                        )}
+                      </Typography>
+                    </div>
+                  }
+                  className="mb-2"
                 />
-                <div className="flex flex-col">
-                  <span className="font-medium text-gray-800">
-                    {Promotion.GET_3_FOR_2}
-                  </span>
-                  <span className="text-xs text-green-700">
-                    You save{" "}
-                    {formatCurrency(
-                      promoData.details.totalGross -
-                        promoData.details.totalPromo
-                    )}
-                  </span>
-                </div>
-              </label>
-            )}
-          </div>
+              )}
+            </RadioGroup>
+          </FormControl>
         )}
 
         {userType === "common" && totalItemsInCart >= 3 && (
           <div className="bg-green-50 border border-green-200 p-3 rounded-md">
-            <p className="text-sm text-green-800 font-semibold">
+            <Typography
+              variant="body2"
+              className="text-green-800 font-semibold"
+            >
               🎉 Promotion Applied:{" "}
-              <span className="underline">{promoData.promotion}</span>
-            </p>
-            <p className="text-xs text-green-700">
+              <span className="underline">{promoData.promotion}.</span>
+            </Typography>
+            <Typography variant="body2" className="text-xs text-green-700">
               You are saving {formatCurrency(totalSaved)}
-            </p>
+            </Typography>
           </div>
         )}
 
         {userType === "common" && totalItemsInCart < 3 && (
-          <p className="text-gray-600 text-sm mt-2">
+          <Typography variant="body2" className="text-gray-600 mt-2">
             Add {3 - totalItemsInCart} more item
             {3 - totalItemsInCart > 1 ? "s" : ""} to unlock promotions!
-          </p>
+          </Typography>
         )}
       </div>
 
@@ -174,16 +195,18 @@ export default function CartSummary({ products }: { products: Product[] }) {
         <span className="text-blue-700">{formatCurrency(getPromoPrice())}</span>
       </div>
 
-      <button
-        style={{ cursor: "pointer" }}
-        className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+      <Button
+        variant="contained"
+        color="primary"
+        className="w-full py-2 px-4 mt-4"
         onClick={() => {
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
         }}
+        startIcon={<CheckIcon />}
       >
-        ✅ Finalize Purchase
-      </button>
+        Finalize Purchase
+      </Button>
 
       {showSuccess && (
         <div className="mt-4 bg-green-100 border border-green-300 text-green-800 p-3 rounded-md text-sm animate-fade-in">

@@ -10,7 +10,7 @@ interface ICustomPalette {
   darkGrey: Palette["primary"];
   lightGrey: Palette["primary"];
   defaultGrey: Palette["primary"];
-  purple: Palette["primary"];
+  blue: Palette["primary"];
 }
 
 interface ICustomPaletteOverride {
@@ -20,7 +20,7 @@ interface ICustomPaletteOverride {
   darkGrey: true;
   lightGrey: true;
   defaultGrey: true;
-  purple: true;
+  blue: true;
 }
 
 interface ICustomTypography {
@@ -164,11 +164,11 @@ theme = createTheme({
       },
       name: "darkGrey",
     }),
-    purple: theme.palette.augmentColor({
+    blue: theme.palette.augmentColor({
       color: {
-        main: "#7723FF",
+        main: "#2b7fff",
       },
-      name: "purple",
+      name: "blue",
     }),
   },
 });

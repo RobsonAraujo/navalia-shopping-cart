@@ -4,7 +4,8 @@ import React from "react";
 import { CartItem } from "@/app/types/cart";
 import { Product } from "@/app/types/cart";
 import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
-import Button from "../button/Button";
+import Button from "@mui/material/Button";
+import { Typography, Divider } from "@mui/material";
 
 interface CartSidebarProps {
   cart: CartItem[];
@@ -18,10 +19,14 @@ export default function CartSidebar({
   removeFromCart,
 }: CartSidebarProps) {
   return (
-    <aside className="w-full lg:w-1/4 bg-white p-6 shadow-md">
-      <h2 className="text-xl font-bold mb-4">Cart</h2>
+    <aside className="w-full lg:w-1/4 bg-white p-6 shadow-lg rounded-lg">
+      <Typography variant="h6" className="mb-4 font-semibold">
+        Cart
+      </Typography>
       {cart.length === 0 ? (
-        <p className="text-gray-500">Your cart is empty.</p>
+        <Typography variant="body2" color="textSecondary">
+          Your cart is empty.
+        </Typography>
       ) : (
         <ul className="space-y-2">
           {cart.map((item) => {
@@ -29,19 +34,20 @@ export default function CartSidebar({
             return (
               <li
                 key={item.productId}
-                className="flex justify-between items-center"
+                className="flex justify-between items-center py-2 "
               >
-                <span>
+                <span className="text-sm">
                   {product?.name || "Product"} x {item.quantity}
                 </span>
                 <div className="flex items-center gap-4">
-                  <span className="font-semibold">
+                  <Typography variant="body1" className="font-semibold">
                     {formatCurrency((product?.price || 0) * item.quantity)}
-                  </span>
+                  </Typography>
                   <Button
+                    variant="outlined"
                     color="error"
                     onClick={() => removeFromCart(item.productId)}
-                    className="text-red-600 hover:text-red-800 text-sm"
+                    className="text-sm"
                     aria-label={`Remove ${
                       product?.name || "product"
                     } from cart`}
@@ -53,6 +59,22 @@ export default function CartSidebar({
             );
           })}
         </ul>
+      )}
+      <Divider style={{ marginBottom: 2, marginTop: 2 }} />
+      {cart.length > 0 && (
+        <div className="flex justify-between">
+          <Typography variant="body1" className="font-semibold">
+            Total:
+          </Typography>
+          <Typography variant="h6" className="font-semibold">
+            {formatCurrency(
+              cart.reduce((total, item) => {
+                const product = products.find((p) => p.id === item.productId);
+                return total + (product?.price || 0) * item.quantity;
+              }, 0)
+            )}
+          </Typography>
+        </div>
       )}
     </aside>
   );
