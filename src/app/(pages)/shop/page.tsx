@@ -22,17 +22,7 @@ export default function HomePage() {
       try {
         const data = await getProducts();
 
-        const enrichedData = data.map((item) => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          image:
-            "https://www.houseofblanks.com/cdn/shop/files/HeavyweightTshirt_Natural_01_1.jpg?v=1726516460&width=1946",
-          location: "Lisbon, Portugal",
-          rating: Math.random() > 0.5 ? (4 + Math.random()).toFixed(1) : null,
-        }));
-
-        setProducts(enrichedData as ProductCardProps[]);
+        setProducts(data);
       } catch (err) {
         setError("Failed to fetch products.");
         console.error(err);

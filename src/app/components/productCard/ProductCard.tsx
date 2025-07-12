@@ -2,14 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
+import { Product } from "@/app/types/cart";
 
-export interface ProductCardProps {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  location?: string;
-  rating?: string | null;
+export interface ProductCardProps extends Product {
   onAddToCart?: () => void;
 }
 

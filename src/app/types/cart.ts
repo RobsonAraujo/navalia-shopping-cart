@@ -4,6 +4,9 @@ export type Product = {
   id: string;
   name: string;
   price: number;
+  image: string;
+  location?: string;
+  rating?: string | null;
 };
 
 export type CartItem = {
