@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Product } from "@/app/types/cart";
 import Button from "../button/Button";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Typography } from "@mui/material"; // Importando Typography do Material UI
+import { Typography } from "@mui/material";
 
 export interface ProductCardProps extends Product {
   onAddToCart?: () => void;
@@ -55,7 +55,7 @@ export default function ProductCard({
         </Typography>
 
         <div className="mt-3 flex items-end justify-between">
-          <Typography variant="titleSmall" color="blue">
+          <Typography variant="h6" color="blue">
             ${price}
           </Typography>
 

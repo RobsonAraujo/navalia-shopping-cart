@@ -5,13 +5,14 @@ import { Product, CartTotalResponse } from "@/app/types/cart";
 import { useCart } from "@/app/contexts/useCart";
 import { useUserType } from "@/app/contexts/useUserType";
 import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
-import Button from "@mui/material/Button";
 import {
+  Button,
   Radio,
   RadioGroup,
   FormControlLabel,
   FormControl,
   Typography,
+  Divider,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -23,7 +24,6 @@ enum Promotion {
 export default function CartSummary({ products }: { products: Product[] }) {
   const { cart } = useCart();
   const { userType } = useUserType();
-
   const [promoData, setPromoData] = useState<CartTotalResponse | null>(null);
   const [selectedPromo, setSelectedPromo] = useState<Promotion | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -31,8 +31,8 @@ export default function CartSummary({ products }: { products: Product[] }) {
   const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
+    if (cart.length === 0) return;
     async function fetchPromo() {
-      if (cart.length === 0) return;
       try {
         const res = await fetch("/api/cart/total", {
           method: "POST",
@@ -48,9 +48,7 @@ export default function CartSummary({ products }: { products: Product[] }) {
     fetchPromo();
   }, [cart, userType]);
 
-  const handleSelectPromo = (promo: Promotion) => {
-    setSelectedPromo(promo);
-  };
+  const handleSelectPromo = (promo: Promotion) => setSelectedPromo(promo);
 
   const getPromoPrice = (): number => {
     if (!promoData) return 0;
@@ -68,8 +66,7 @@ export default function CartSummary({ products }: { products: Product[] }) {
     ? promoData.details.totalGross - getPromoPrice()
     : 0;
 
-  if (!promoData) return null;
-  if (cart.length === 0) return null;
+  if (!promoData || cart.length === 0) return null;
 
   return (
     <aside className="w-full lg:w-1/4 bg-white p-6 shadow-xl rounded-xl space-y-5 border border-lightGrey">
@@ -96,6 +93,8 @@ export default function CartSummary({ products }: { products: Product[] }) {
         })}
       </ul>
 
+      <Divider sx={{ my: 2 }} />
+
       <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
         <Typography
           variant="subtitle1"
@@ -114,12 +113,12 @@ export default function CartSummary({ products }: { products: Product[] }) {
                 value={Promotion.VIP}
                 control={<Radio />}
                 label={
-                  <div className="flex flex-col p-3 border  border-lightGrey  rounded-lg shadow-sm transition-all hover:bg-blue-50">
+                  <div className="flex flex-col p-3 border border-lightGrey bg-white rounded-lg shadow-sm transition-all hover:bg-blue-50">
                     <Typography
                       variant="body2"
                       className="font-medium text-gray-800"
                     >
-                      {Promotion.VIP}
+                      🎉 {Promotion.VIP}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -141,16 +140,16 @@ export default function CartSummary({ products }: { products: Product[] }) {
                   value={Promotion.GET_3_FOR_2}
                   control={<Radio />}
                   label={
-                    <div className="flex flex-col p-3 border  border-lightGrey rounded-lg shadow-sm transition-all hover:bg-blue-50">
+                    <div className="flex flex-col p-3 border bg-white border-lightGrey rounded-lg shadow-sm transition-all hover:bg-blue-50">
                       <Typography
                         variant="body2"
                         className="font-medium text-gray-800"
                       >
-                        {Promotion.GET_3_FOR_2}
+                        🎉 {Promotion.GET_3_FOR_2}
                       </Typography>
                       <Typography
                         variant="body2"
-                        className="text-xs text-green-700  "
+                        className="text-xs text-green-700"
                       >
                         You save{" "}
                         {formatCurrency(
@@ -174,7 +173,7 @@ export default function CartSummary({ products }: { products: Product[] }) {
               className="text-green-800 font-semibold"
             >
               🎉 Promotion Applied:{" "}
-              <span className="underline">{promoData.promotion}.</span>
+              <span className="underline">{promoData.promotion}</span>
             </Typography>
             <Typography variant="body2" className="text-xs text-green-700">
               You are saving {formatCurrency(totalSaved)}

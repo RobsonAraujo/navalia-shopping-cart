@@ -1,11 +1,9 @@
 "use client";
 
 import React from "react";
-import { CartItem } from "@/app/types/cart";
-import { Product } from "@/app/types/cart";
+import { CartItem, Product } from "@/app/types/cart";
 import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
-import Button from "@mui/material/Button";
-import { Typography, Divider } from "@mui/material";
+import { Button, Typography, Divider } from "@mui/material";
 
 interface CartSidebarProps {
   cart: CartItem[];
@@ -18,6 +16,11 @@ export default function CartSidebar({
   products,
   removeFromCart,
 }: CartSidebarProps) {
+  const totalAmount = cart.reduce((total, item) => {
+    const product = products.find((p) => p.id === item.productId);
+    return total + (product?.price || 0) * item.quantity;
+  }, 0);
+
   return (
     <aside className="w-full lg:w-1/4 bg-white p-6 shadow-lg rounded-lg">
       <Typography variant="h6" className="mb-4 font-semibold">
@@ -34,7 +37,7 @@ export default function CartSidebar({
             return (
               <li
                 key={item.productId}
-                className="flex justify-between items-center py-2 "
+                className="flex justify-between items-center py-2"
               >
                 <span className="text-sm">
                   {product?.name || "Product"} x {item.quantity}
@@ -60,19 +63,14 @@ export default function CartSidebar({
           })}
         </ul>
       )}
-      <Divider style={{ marginBottom: 2, marginTop: 2 }} />
+      <Divider sx={{ my: 2 }} />
       {cart.length > 0 && (
         <div className="flex justify-between">
           <Typography variant="body1" className="font-semibold">
             Total:
           </Typography>
           <Typography variant="h6" className="font-semibold">
-            {formatCurrency(
-              cart.reduce((total, item) => {
-                const product = products.find((p) => p.id === item.productId);
-                return total + (product?.price || 0) * item.quantity;
-              }, 0)
-            )}
+            {formatCurrency(totalAmount)}
           </Typography>
         </div>
       )}

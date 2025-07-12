@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { UserType } from "@/app/types/cart";
 
 type UserTypeContextType = {
@@ -14,6 +20,17 @@ const UserTypeContext = createContext<UserTypeContextType | undefined>(
 
 export function UserTypeProvider({ children }: { children: ReactNode }) {
   const [userType, setUserType] = useState<UserType>("common");
+
+  useEffect(() => {
+    const storedUserType = localStorage.getItem("userType");
+    if (storedUserType) {
+      setUserType(storedUserType as UserType);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("userType", userType);
+  }, [userType]);
 
   return (
     <UserTypeContext.Provider value={{ userType, setUserType }}>

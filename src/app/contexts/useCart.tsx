@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { CartItem } from "@/app/types/cart";
 
 type CartContextType = {
@@ -8,13 +14,27 @@ type CartContextType = {
   addToCart: (productId: string, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
-  clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      localStorage.removeItem("cart");
+    }
+  }, [cart]);
 
   function addToCart(productId: string, quantity: number = 1) {
     setCart((prev) => {
@@ -31,7 +51,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   function removeFromCart(productId: string) {
-    setCart((prev) => prev.filter((item) => item.productId !== productId));
+    setCart((prev) => {
+      const updatedCart = prev.filter((item) => item.productId !== productId);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
   }
 
   function updateQuantity(productId: string, quantity: number) {
@@ -43,13 +67,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  function clearCart() {
-    setCart([]);
-  }
-
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}
+      value={{ cart, addToCart, removeFromCart, updateQuantity }}
     >
       {children}
     </CartContext.Provider>
