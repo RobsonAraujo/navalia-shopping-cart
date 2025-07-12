@@ -115,7 +115,8 @@ docker exec -it shoppingcart-app /bin/sh
 
 ```
 npx prisma migrate dev
-npx prisma db seed
+npm run build:seed
+npm run seed
 ```
 
 ## Author

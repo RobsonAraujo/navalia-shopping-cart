@@ -39,7 +39,7 @@ export default function CartSidebar({
                     {formatCurrency((product?.price || 0) * item.quantity)}
                   </span>
                   <Button
-                    style={{ cursor: "pointer" }}
+                    color="error"
                     onClick={() => removeFromCart(item.productId)}
                     className="text-red-600 hover:text-red-800 text-sm"
                     aria-label={`Remove ${
