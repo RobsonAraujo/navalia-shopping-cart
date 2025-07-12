@@ -119,6 +119,12 @@ npm run build:seed
 npm run seed
 ```
 
+App will be available in the address:
+
+```
+http://localhost:3000/
+```
+
 ## Author
 
 👤 **Robson Carmo**
