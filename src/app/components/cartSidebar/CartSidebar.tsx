@@ -4,6 +4,7 @@ import React from "react";
 import { CartItem } from "@/app/types/cart";
 import { Product } from "@/app/types/cart";
 import { formatCurrency } from "@/app/utils/formatCurrency/formatCurrency";
+import Button from "../button/Button";
 
 interface CartSidebarProps {
   cart: CartItem[];
@@ -37,7 +38,7 @@ export default function CartSidebar({
                   <span className="font-semibold">
                     {formatCurrency((product?.price || 0) * item.quantity)}
                   </span>
-                  <button
+                  <Button
                     style={{ cursor: "pointer" }}
                     onClick={() => removeFromCart(item.productId)}
                     className="text-red-600 hover:text-red-800 text-sm"
@@ -46,7 +47,7 @@ export default function CartSidebar({
                     } from cart`}
                   >
                     Remove
-                  </button>
+                  </Button>
                 </div>
               </li>
             );
