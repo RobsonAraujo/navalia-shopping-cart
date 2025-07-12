@@ -13,6 +13,7 @@ import {
   FormControl,
   Typography,
   Divider,
+  CircularProgress,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -27,6 +28,17 @@ export default function CartSummary({ products }: { products: Product[] }) {
   const [promoData, setPromoData] = useState<CartTotalResponse | null>(null);
   const [selectedPromo, setSelectedPromo] = useState<Promotion | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleFinalizePurchase = () => {
+    setIsProcessing(true);
+
+    setTimeout(() => {
+      setIsProcessing(false);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
+    }, 2000);
+  };
 
   const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -198,13 +210,17 @@ export default function CartSummary({ products }: { products: Product[] }) {
         variant="contained"
         color="primary"
         className="w-full py-2 px-4 mt-4"
-        onClick={() => {
-          setShowSuccess(true);
-          setTimeout(() => setShowSuccess(false), 3000);
-        }}
-        startIcon={<CheckIcon />}
+        onClick={handleFinalizePurchase}
+        startIcon={
+          isProcessing ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            <CheckIcon />
+          )
+        }
+        disabled={isProcessing} // Desabilita o botão enquanto está processando
       >
-        Finalize Purchase
+        {isProcessing ? "Processing..." : "Finalize Purchase"}
       </Button>
 
       {showSuccess && (
